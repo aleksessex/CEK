@@ -4,7 +4,20 @@ from gmpy2 import mpz
 
 
 class PublicKey(object):
-
+    """
+    n: pq where p, q, are l-bit primes such that:
+        if b = 2:
+            p = 2^d * p_s * p_t + 1
+            q = 2^d * q_s * q_t + 1
+        Otherwise: 
+            p = 2 * b^d * p_s * p_t
+            q = 2 * b^d * q_s * q_t
+    g: Generator of message space of b^d mod p, and order b^d mod q.
+    h: Generator of randomizer space of order p_s mod p, and q_s mod q.
+    b: Small prime base
+    d: Threshold bound
+    u: Bitlength of randomizer space in Z^*_p and Z^*_q
+    """
     def __init__(self, n, g, h, b, d, u):
 
         if not (gmpy2.powmod(g, mpz(b ** d), n) == 1):
@@ -59,7 +72,11 @@ class PublicKey(object):
 
 
 class PrivateKey(object):
-
+    """
+    p:   One of the prime factors of n of the form described above
+    p_s: Order of h mod p
+    x:   Multiplicative inverse of p_s mod b^d
+    """
     def __init__(self, x, p_s, p):
 
         if not (gmpy2.is_prime(p)):
