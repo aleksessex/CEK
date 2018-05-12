@@ -1,0 +1,2 @@
+gmpy2>=2.0.7
+pytest
