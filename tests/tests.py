@@ -9,7 +9,6 @@ from cek import Cryptosystem
 keypairs = []
 # Keypair data values
 samples = ["CEK OP"]
-samples_keys = [1111]
 # Encrypted data values
 encrypted_data = []
 
@@ -28,35 +27,27 @@ def gen_key(index, keypair):
     print("Keypair #{} pub/priv key generated").format(index)
     assert type(keypair) is Cryptosystem
 
-def add_keys_data():
+def encrypt_keys():
     for index, keypair in enumerate(keypairs):
-        add_key_data(index + 1, keypair)
+        encrypt_key(index + 1, keypair)
 
-def add_key_data(index, keypair):
-    sample_key = keypair.rerandomize(samples_keys[0])
-    samples_keys[0] = sample_key
-    print("Keypair #{} key created {}").format(index, type(long(sample_key)))
-    assert type(long(sample_key)) is long
-
+def encrypt_key(index, keypair):
     enc_data = keypair.encrypt(samples[0])
     encrypted_data.append(enc_data)
-    print("Keypair #{} encrypted data {}").format(index, type(long(enc_data)))
+    print("Keypair #{} encrypted data: {}").format(index, samples[0])
     assert type(long(enc_data)) is long
 
 def decrypt_keys():
     for index, keypair in enumerate(keypairs):
-        decrypt_key(index + 1, keypair)
+        decrypt_key(index + 1, keypair, encrypted_data[index])
 
-def decrypt_key(index, keypair):
-    print("Decryption suite needs to be discussed...")
-    '''
-    value = keypair.decrypt(samples_keys[0])
+def decrypt_key(index, keypair, enc_data):
+    value = keypair.decrypt(enc_data) # Problem with decrypt - always return `Inf`
     print("Keypair #{} data decrypted: {}").format(index, value)
-    '''
 
 
 # Start testing suite
 gen_keypairs()
 gen_keys()
-add_keys_data()
+encrypt_keys()
 decrypt_keys()
