@@ -1,18 +1,67 @@
 CEK public-key cryptosystem
 ===========================
 
+(master branch) [![Build Status](https://travis-ci.org/ChrisCates/CEK.svg?branch=master)](https://travis-ci.org/ChrisCates/CEK)
+
+(testing branch) [![Build Status](https://travis-ci.org/ChrisCates/CEK.svg?branch=testing)](https://travis-ci.org/ChrisCates/CEK)
+
 A Python reference implementation of the Carlton-Essex-Kapulkin cryptosystem.
 
-CEK is a probabilistic asymmteric-key cryptosystem in <a href="https://www.codecogs.com/eqnedit.php?latex=\mathbb{Z}^*_n" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\mathbb{Z}^*_n" title="\mathbb{Z}^*_n" /></a>. It has a threshold homomorphic property that causes the encrypted plaintext to map to a singular value if it exceeds a given threshold. 
+CEK is a probabilistic asymmteric-key cryptosystem in <a href="https://www.codecogs.com/eqnedit.php?latex=\mathbb{Z}^*_n" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\mathbb{Z}^*_n" title="\mathbb{Z}^*_n" /></a>. It has a threshold homomorphic property that causes the encrypted plaintext to map to a singular value if it exceeds a given threshold.
 
 Publication
 -----------
 
 Rhys Carlton and Aleksander Essex and Krzysztof Kapulkin.
-_Threshold Properties of Prime Power Subgroups with Application to Secure Integer Comparisons_. 
+_Threshold Properties of Prime Power Subgroups with Application to Secure Integer Comparisons_.
 The Cryptographers' Track at the RSA Conference 2018, San Francisco, CA, USA, April 16-20, 2018
 
 Paper on IACR ePrint archive: [[PDF]](https://eprint.iacr.org/2018/224)
+
+Requirements and Setup
+----------------------
+
+1. Unix OS
+2. python 2 or python 3 and clang (for gmp)
+3. gmp library
+
+```
+# For Mac OS (requires homebrew)
+brew install mpfr
+brew install libmpc
+brew install gmp
+
+# For Debian OSes
+sudo apt-get install libmpfr-dev
+sudo apt-get install libmpc-dev
+sudo apt-get install libgmp2-dev
+
+# For RHEL OSes
+sudo yum install libmpfr-dev
+sudo yum install libmpc-dev
+sudo yum install libgmp2-dev
+```
+
+4. Required python packages installed via pip
+
+```
+sudo pip install -r ./requirements.txt
+```
+
+Running Tests
+-------------
+
+1. To run via pytest
+
+```
+sh pytest.sh
+```
+
+2. To run as plain python application
+
+```
+sh test.sh
+```
 
 Usage
 -----
@@ -78,7 +127,7 @@ An interesting feature of the cryptosytem is that the plaintext takes on a fixed
 >>> for i in range(1,10):
 ...     c = cs.add(c, 1)
 ...     print cs.decrypt(c)
-... 
+...
 251
 252
 253
@@ -90,8 +139,8 @@ Inf
 Inf
 ```
 
-Observe when the plaintext reaches the threhsold `d`=256, it takes on this fixed value (`Inf`), after which the scalar homomorphic addition operation produces no change to the underlying plaintext. 
- 
+Observe when the plaintext reaches the threhsold `d`=256, it takes on this fixed value (`Inf`), after which the scalar homomorphic addition operation produces no change to the underlying plaintext.
+
 To show you this in greater detail, we'll print out the ciphertexts at each step:
 
 ```
@@ -100,7 +149,7 @@ To show you this in greater detail, we'll print out the ciphertexts at each step
 ...     c = cs.add(c, 1)
 ...     print c
 ...     print cs.decrypt(c)
-... 
+...
 248218327032847603553177689973713140206903151917197493347990558857392534753894145101908278493985928202208699666895780895234633136902328820793947392948629665936160393137248131005119548989280304672829788401613211787228605817394004322875085431928060074155919713015947982203263344961048538910657279570136201122721496615543057425750552043955994040395628430057978200128598128740568797387282056834029309509004678855947853207200793642169903275680370002453999623698240723713334064138390693504982924167709084233404376886885163483111094691535335077545191694507313712278172601572174064871307693905676760174768724320732877976515
 251
 183876361371697517071574399618208283983535109828666603729980024492085484230099286286140140106082561871871577922752379937099905030595884988640766639242760766498708046785692270396385824744522482390021980468219170403343640506444461181002195613645549353557201804619089298107564728479261133748083187731642257665249605432477787769025848848437145122711944759793087861644201920070750539385709021124009733219557621584020017048393433045418522384038321288862337131215609980893206281326450975920014728805045116048117814005672930263357755351824375505596667077760294214708910517492187377649811752967437606642821811515627140148219

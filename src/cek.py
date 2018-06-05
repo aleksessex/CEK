@@ -1,4 +1,7 @@
-import gmpy2, sys, math
+import gmpy2
+import sys
+import math
+
 from gmpy2 import mpz
 from utils import crt
 from prng import PRNG
@@ -11,7 +14,7 @@ def generate_CEK_prime(l, u, b, d):
     if b == 2:
         p_t_bits = l - b_d_bits - u
         p_t = rs.random_prime(p_t_bits)
-        while True:    
+        while True:
             p_s = rs.random_prime(u)
             p = b_d * p_s * p_t + 1
             if gmpy2.is_prime(p):
@@ -19,14 +22,14 @@ def generate_CEK_prime(l, u, b, d):
     else:
         p_t_bits = l - b_d_bits - u - 1
         p_t = rs.random_prime(p_t_bits)
-        while True:    
+        while True:
             p_s = rs.random_prime(u)
             p = 2 * b_d * p_s * p_t + 1
             if gmpy2.is_prime(p):
                 return p_s, p
 
 def generate_h(p_s, p, q_s, q):
-    """Compute a generator of a subgroup of Z^*_n that has order 
+    """Compute a generator of a subgroup of Z^*_n that has order
     p_s mod p and order q_s mod q"""
     rs = PRNG()
     while True:
@@ -40,7 +43,7 @@ def generate_h(p_s, p, q_s, q):
     return crt([p, q], [hp, hq])
 
 def generate_g(b, d, p, q):
-    """Compute a generator of a subgroup of Z^*_n that has order 
+    """Compute a generator of a subgroup of Z^*_n that has order
     b**d mod p and order b**d mod q"""
     rs = PRNG()
     b_to_the_d = b ** d
@@ -82,12 +85,12 @@ class Cryptosystem(object):
         self.prv_key = None
         self.rs = PRNG()
 
-    def load_key(self, pub_key_fn, prv_key_fn=None):     
+    def load_key(self, pub_key_fn, prv_key_fn=None):
         self.pub_key = PublicKey.load_from_file(pub_key_fn)
         if prv_key_fn is not None:
             self.prv_key = PrivateKey.load_from_file(prv_key_fn)
 
-    def write_key(self, key_fn):      
+    def write_key(self, key_fn):
         if self.pub_key is not None:
             self.pub_key.write_to_file(key_fn+".pub")
         if self.prv_key is not None:
@@ -142,6 +145,3 @@ class Cryptosystem(object):
                 if gmpy2.powmod(self.pub_key.g, self.pub_key.b ** m, self.prv_key.p) == gm:
                     return m
         return "Decryption error"
-
-
-
